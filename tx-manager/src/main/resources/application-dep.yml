@@ -1,0 +1,34 @@
+spring:
+  datasource:
+    driver-class-name:  com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/tx-manager?characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    username: root
+    password: 123
+  redis:
+    cluster:
+      nodes: 192.168.31.125:7000,192.168.31.125:7001,192.168.31.126:7000,192.168.31.126:7001,192.168.31.127:7000,192.168.31.127:7001
+    password:
+    # 连接超时时间（毫秒）
+    timeout: 10000ms
+    database: 0
+tx-lcn:
+  manager:
+    host: 192.168.0.8
+    #
+    port: 8070
+    concurrent-level: 128
+    admin-key: codingapi
+    ex-url-enabled: false
+  message:
+    netty:
+      attr-delay-time: 10000
+  logger:
+    enabled: true
+    driver-class-name: ${spring.datasource.driver-class-name}
+    jdbc-url: ${spring.datasource.url}
+    username: ${spring.datasource.username}
+    password: ${spring.datasource.password}
+#eureka:
+#  client:
+#    service-url:
+#      defaultZone:  http://192.168.1.177:8761/eureka

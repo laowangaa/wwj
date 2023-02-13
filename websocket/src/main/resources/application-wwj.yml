@@ -1,0 +1,18 @@
+spring:
+  datasource:
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    url: jdbc:sqlserver://${wwjconfig.masterIp};DatabaseName=user
+    username: ${wwjconfig.masterUsername}
+    password: ${wwjconfig.masterPwd}
+  main:
+    allow-bean-definition-overriding: true
+eureka:
+  instance:
+    lease-renewal-interval-in-seconds: 5
+    lease-expiration-duration-in-seconds: 5
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ip-address}:${spring.application.name}:${server.port}
+    hostname: ${spring.application.name}
+  client:
+    service-url:
+      defaultZone: ${wwjconfig.eurekaNodes}

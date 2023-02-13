@@ -1,0 +1,17 @@
+spring:
+  profiles:
+    active: dep
+server:
+  port: 8761
+eureka:
+  server:
+    enable-self-preservation: false
+    eviction-interval-timer-in-ms: 2000
+  instance:
+    prefer-ip-address: true
+    hostname: ${spring.cloud.client.ip-address}
+    instance-id: ${spring.cloud.client.ip-address}:${spring.application.name}:${server.port}
+  client:
+    registerWithEureka: false
+    fetchRegistry: true
+

@@ -1,0 +1,145 @@
+server:
+  port: 9002
+spring:
+  application:
+    name: gateway
+  profiles:
+    active: dep
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: false
+          lower-case-service-id: true
+      routes:
+      - id: business-permitting
+        uri: lb://business-permitting
+        predicates:
+        - Path=/permitting/**
+      - id: framework
+        uri: lb://framework
+        predicates:
+        - Path=/framework/**
+        filters:
+        - StripPrefix=1
+      - id: national
+        uri: lb://national
+        predicates:
+        - Path=/national/**
+        filters:
+        - StripPrefix=1
+      - id: province
+        uri: lb://province
+        predicates:
+        - Path=/province/**
+        filters:
+        - StripPrefix=1
+      - id: appraisal
+        uri: lb://appraisal
+        predicates:
+        - Path=/appraisal/**
+        filters:
+        - StripPrefix=1
+      - id: expert
+        uri: lb://expert
+        predicates:
+        - Path=/expert/**
+        filters:
+        - StripPrefix=1
+      - id: business-sso
+        uri: lb://business-sso
+        predicates:
+        - Path=/sso/**
+      - id: business-websocket
+        uri: lb://business-websocket
+        predicates:
+        - Path=/websocket/**
+        filters:
+        - StripPrefix=1
+      - id: assessment
+        uri: lb://assessment
+        predicates:
+        - Path=/assessment/**
+        filters:
+        - StripPrefix=1
+      - id: personal
+        uri: lb://personal
+        predicates:
+        - Path=/personal/**
+        filters:
+        - StripPrefix=1
+      - id: organization
+        uri: lb://organization
+        predicates:
+        - Path=/organization/**
+        filters:
+        - StripPrefix=1
+      - id: customs
+        uri: lb://customs
+        predicates:
+        - Path=/customs/**
+        filters:
+        - StripPrefix=1
+      - id: quartz
+        uri: lb://quartz
+        predicates:
+        - Path=/quartz/**
+        filters:
+        - StripPrefix=1
+      - id: tempfile
+        uri: lb://tempfile
+        predicates:
+        - Path=/tempfile/**
+        filters:
+        - StripPrefix=1
+      - id: formalfile
+        uri: lb://formalfile
+        predicates:
+        - Path=/formalfile/**
+        filters:
+        - StripPrefix=1
+      - id: demo1
+        uri: lb://demo1
+        predicates:
+        - Path=/demo1/**
+        filters:
+        - StripPrefix=1
+      - id: content
+        uri: lb://content
+        predicates:
+        - Path=/content/**
+        filters:
+        - StripPrefix=1
+      - id: regulatory
+        uri: lb://regulatory
+        predicates:
+        - Path=/regulatory/**
+        filters:
+        - StripPrefix=1
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "http://192.168.0.2"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTION
+  main:
+    allow-bean-definition-overriding: true
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 6000
+passuri:
+  path: passuri.xml
+ribbon:
+  eager-load:
+    enabled: true
+    clients: PERMITTING, NATIONAL, PROVINCE, APPRAISAL, ASSESSMENT, EXPERT, CUSTOMS, ORGANIZATION, PERSONAL, TEMPFILE, FORMALFILE
+
+

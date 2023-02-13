@@ -1,0 +1,22 @@
+server:
+  port: 8100
+spring:
+  application:
+    name: workflow
+  profiles:
+    active: dep
+  main:
+    allow-bean-definition-overriding: true
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform:  org.hibernate.dialect.SQLServer2012Dialect
+    show-sql: true
+eureka:
+  instance:
+    lease-renewal-interval-in-seconds: 30
+    lease-expiration-duration-in-seconds: 70
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ip-address}:${spring.application.name}:${server.port}
+    hostname: ${spring.application.name}
+

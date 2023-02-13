@@ -1,0 +1,62 @@
+wwjconfig:
+
+  #es地址
+  esname: elasticsearch-cluster
+  esnode: 192.168.31.172:9300,192.168.31.172:9301,192.168.31.172:9302
+  esindex: article_info
+  estype: data
+
+  #主数据库地址
+  masterIp: 192.168.31.155
+  #主数据库账号
+  masterUsername: sa
+  #主数据库密码
+  masterPwd: sa@123456
+
+  #从数据库地址
+  slaveIp: 192.168.31.157
+  #主数据库账号
+  slaveUsername: sa
+  #主数据库密码
+  slavePwd: sa@12345
+
+  #redis集群地址
+  redisNodes: 192.168.31.168:7000,192.168.31.168:7001,192.168.31.169:7000,192.168.31.169:7001,192.168.31.172:7000,192.168.31.172:7001
+  #redis集群密码
+  redisPwd: nasoft2021
+
+  #kafka地址
+  kafkaNodes: 192.168.31.168:9092,192.168.31.169:9092,192.168.31.172:9092
+
+  #eureka地址
+  eurekaNodes: http://192.168.31.164:8761/eureka/,http://192.168.31.165:8761/eureka/,http://192.168.31.166:8761/eureka/
+
+  #文件根目录
+  fileRoot: /zhxzgl
+  #临时文件服务地址
+  temp-address: http://192.168.31.164:9000/file
+  #正式文件服务地址
+  exact-address: http://192.168.31.164:9080/file
+
+  #配置单点登录服务器地址
+  ssoUrl: http://192.168.31.161:9002
+
+  #短信接口调用配置
+  #发送短信地址
+  http-sendUrl: http://sms.cchmi.com/ws/BatchSend2.aspx
+  #接收短信地址
+  http-getUrl: http://sms.cchmi.com/ws/Get.aspx
+  #查询余额地址
+  http-getSelSum: http://sms.cchmi.com/ws/SelSum.aspx
+  #获取禁止号码NotSend
+  http-getNotSend: http://sms.cchmi.com/ws/NotSend.aspx
+  http-username: zongheyonghu
+  http-passwd: nasoft123456
+
+  txLcnAddr: 192.168.31.171:8070
+  txLcnJdbcUrl: 192.168.31.171:3306
+  txLcnUser: root
+  txLcnPwd: sa@12345
+spring:
+  profiles:
+    active: dep

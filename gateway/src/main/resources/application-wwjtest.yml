@@ -1,0 +1,21 @@
+spring:
+  #    database: 0
+  #    host: 192.168.1.144
+  #    port: 7000
+  data:
+    redis:
+      timeout: 10000ms
+      cluster:
+        nodes: 192.168.31.162:7000,192.168.31.162:7001,192.168.31.163:7000,192.168.31.163:7001,192.168.31.164:7000,192.168.31.164:7001
+      password: 305305
+eureka:
+  instance:
+    lease-renewal-interval-in-seconds: 30
+    lease-expiration-duration-in-seconds: 70
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ip-address}:${spring.application.name}:${server.port}
+    hostname: ${spring.application.name}
+  client:
+    service-url:
+      defaultZone: http://192.168.31.170:8761/eureka
+ssoUrl: http://192.168.0.8:8082

@@ -1,0 +1,21 @@
+spring:
+  redis:
+    cluster:
+      nodes: ${wwjconfig.redisNodes}
+    password: ${wwjconfig.redisPwd}
+    # 连接超时时间（毫秒）
+    timeout: 10000ms
+  #    database: 0
+  #    host: 192.168.1.144
+  #    port: 7000
+eureka:
+  instance:
+    lease-renewal-interval-in-seconds: 5
+    lease-expiration-duration-in-seconds: 5
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ip-address}:${spring.application.name}:${server.port}
+    hostname: ${spring.application.name}
+  client:
+    service-url:
+      defaultZone: ${wwjconfig.eurekaNodes}
+ssoUrl: http://192.168.0.8:8082

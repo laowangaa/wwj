@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:tns="http://www.activiti.org/test" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" expressionLanguage="http://www.w3.org/1999/XPath" id="m1589445201581" name="" targetNamespace="http://www.activiti.org/test" typeLanguage="http://www.w3.org/2001/XMLSchema">
+  <process id="approval-document" isClosed="false" isExecutable="true" name="approval-document" processType="None">
+    <startEvent id="_2" name="开始"/>
+    <endEvent id="end" name="结束"/>
+    <userTask activiti:exclusive="true" id="accept-accept_turn" name="待受理"/>
+    <sequenceFlow id="_5" sourceRef="_2" targetRef="accept-accept_turn"/>
+    <userTask activiti:exclusive="true" id="approval-deal" name="已受理"/>
+    <userTask activiti:exclusive="true" id="approval-sign" name="签报"/>
+    <userTask activiti:exclusive="true" id="approval-dispatch" name="发文"/>
+    <exclusiveGateway gatewayDirection="Unspecified" id="_19" name="ExclusiveGateway"/>
+    <exclusiveGateway gatewayDirection="Unspecified" id="_23" name="ExclusiveGateway"/>
+    <sequenceFlow id="_24" sourceRef="accept-accept_turn" targetRef="_23"/>
+    <sequenceFlow id="_25" name="受理" sourceRef="_23" targetRef="approval-deal">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${nodeType == 1}]]></conditionExpression>
+    </sequenceFlow>
+    <userTask activiti:exclusive="true" id="accept-accept_refuse" name="不予受理"/>
+    <sequenceFlow id="_27" name="不予受理" sourceRef="_23" targetRef="accept-accept_refuse">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${nodeType == 3}]]></conditionExpression>
+    </sequenceFlow>
+    <userTask activiti:exclusive="true" id="accept-accept_back" name="退回补正"/>
+    <sequenceFlow id="_29" name="退回补正" sourceRef="_23" targetRef="accept-accept_back">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${nodeType == 2}]]></conditionExpression>
+    </sequenceFlow>
+    <exclusiveGateway gatewayDirection="Unspecified" id="_14" name="ExclusiveGateway"/>
+    <sequenceFlow id="_15" sourceRef="accept-accept_refuse" targetRef="_14"/>
+    <sequenceFlow id="_33" name="受理" sourceRef="_14" targetRef="approval-deal">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${nodeType == 1}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_34" name="退回补正" sourceRef="_14" targetRef="accept-accept_back">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${nodeType == 2}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_35" sourceRef="accept-accept_back" targetRef="_14"/>
+    <sequenceFlow id="_36" name="不予受理" sourceRef="_14" targetRef="accept-accept_refuse">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${nodeType == 3}]]></conditionExpression>
+    </sequenceFlow>
+    <userTask activiti:exclusive="true" id="expert-deal_expert" name="受理请专家"/>
+    <userTask activiti:exclusive="true" id="expert-sign_expert" name="签报请专家"/>
+    <userTask activiti:exclusive="true" id="expert-dispatch_expert" name="发文请在专家"/>
+    <exclusiveGateway gatewayDirection="Unspecified" id="_3" name="ExclusiveGateway"/>
+    <sequenceFlow id="_4" sourceRef="approval-dispatch" targetRef="_3"/>
+    <sequenceFlow id="_6" name="发文请专家line" sourceRef="_3" targetRef="expert-dispatch_expert">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${nodeType == 3}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_10" sourceRef="expert-dispatch_expert" targetRef="approval-dispatch"/>
+    <exclusiveGateway gatewayDirection="Unspecified" id="_12" name="ExclusiveGateway"/>
+    <sequenceFlow id="_13" sourceRef="approval-sign" targetRef="_12"/>
+    <sequenceFlow id="_17" name="签报请专家line" sourceRef="_12" targetRef="expert-sign_expert">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${nodeType == 3}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_18" sourceRef="expert-sign_expert" targetRef="approval-sign"/>
+    <sequenceFlow id="_22" name="作废签报" sourceRef="_12" targetRef="approval-deal">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${nodeType == 1}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_26" sourceRef="expert-deal_expert" targetRef="approval-deal"/>
+    <sequenceFlow id="_8" sourceRef="approval-deal" targetRef="_19"/>
+    <sequenceFlow id="_9" sourceRef="_19" targetRef="approval-dispatch">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${nodeType == 1}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_11" sourceRef="_19" targetRef="approval-sign">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${nodeType == 2}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_16" sourceRef="_19" targetRef="expert-deal_expert">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${nodeType == 3}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_20" name="作废发文" sourceRef="_3" targetRef="approval-deal">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${nodeType == 9}]]></conditionExpression>
+    </sequenceFlow>
+    <userTask activiti:exclusive="true" id="pub-sign_pub" name="签报公示"/>
+    <sequenceFlow id="_28" name="签报公示" sourceRef="_12" targetRef="pub-sign_pub">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${nodeType == 4}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_30" sourceRef="pub-sign_pub" targetRef="approval-deal"/>
+    <userTask activiti:exclusive="true" id="approval-sign_issue" name="封发"/>
+    <sequenceFlow id="_37" sourceRef="approval-sign_issue" targetRef="end"/>
+    <sequenceFlow id="_7" name="发回拟稿人" sourceRef="_3" targetRef="approval-sign_issue">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${nodeType == 1}]]></conditionExpression>
+    </sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram documentation="background=#3C3F41;count=1;horizontalcount=1;orientation=0;width=842.4;height=1195.2;imageableWidth=832.4;imageableHeight=1185.2;imageableX=5.0;imageableY=5.0" id="Diagram-_1" name="New Diagram">
+    <bpmndi:BPMNPlane bpmnElement="approval-document">
+      <bpmndi:BPMNShape bpmnElement="_2" id="Shape-_2">
+        <omgdc:Bounds height="32.0" width="32.0" x="540.0" y="-5.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="32.0" width="32.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="end" id="Shape-end">
+        <omgdc:Bounds height="32.0" width="32.0" x="935.0" y="765.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="32.0" width="32.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="accept-accept_turn" id="Shape-accept-accept_turn">
+        <omgdc:Bounds height="55.0" width="85.0" x="510.0" y="90.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="55.0" width="85.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="approval-deal" id="Shape-approval-deal">
+        <omgdc:Bounds height="55.0" width="85.0" x="510.0" y="320.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="55.0" width="85.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="approval-sign" id="Shape-approval-sign">
+        <omgdc:Bounds height="55.0" width="85.0" x="290.0" y="585.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="55.0" width="85.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="approval-dispatch" id="Shape-approval-dispatch">
+        <omgdc:Bounds height="55.0" width="85.0" x="565.0" y="540.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="55.0" width="85.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_19" id="Shape-_19" isMarkerVisible="false">
+        <omgdc:Bounds height="32.0" width="32.0" x="555.0" y="435.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="32.0" width="32.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_23" id="Shape-_23" isMarkerVisible="false">
+        <omgdc:Bounds height="32.0" width="32.0" x="540.0" y="175.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="32.0" width="32.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="accept-accept_refuse" id="Shape-accept-accept_refuse">
+        <omgdc:Bounds height="55.0" width="85.0" x="750.0" y="240.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="55.0" width="85.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="accept-accept_back" id="Shape-accept-accept_back">
+        <omgdc:Bounds height="55.0" width="85.0" x="730.0" y="40.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="55.0" width="85.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_14" id="Shape-_14" isMarkerVisible="false">
+        <omgdc:Bounds height="32.0" width="32.0" x="780.0" y="140.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="32.0" width="32.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="expert-deal_expert" id="Shape-expert-deal_expert">
+        <omgdc:Bounds height="55.0" width="85.0" x="275.0" y="415.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="55.0" width="85.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="expert-sign_expert" id="Shape-expert-sign_expert">
+        <omgdc:Bounds height="55.0" width="85.0" x="160.0" y="720.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="55.0" width="85.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="expert-dispatch_expert" id="Shape-expert-dispatch_expert">
+        <omgdc:Bounds height="55.0" width="85.0" x="390.0" y="640.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="55.0" width="85.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_3" id="Shape-_3" isMarkerVisible="false">
+        <omgdc:Bounds height="32.0" width="32.0" x="610.0" y="645.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="32.0" width="32.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_12" id="Shape-_12" isMarkerVisible="false">
+        <omgdc:Bounds height="32.0" width="32.0" x="190.0" y="595.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="32.0" width="32.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="pub-sign_pub" id="Shape-pub-sign_pub">
+        <omgdc:Bounds height="55.0" width="85.0" x="10.0" y="565.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="55.0" width="85.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="approval-sign_issue" id="Shape-approval-sign_issue">
+        <omgdc:Bounds height="55.0" width="85.0" x="755.0" y="755.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="55.0" width="85.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="_35" id="BPMNEdge__35" sourceElement="accept-accept_back" targetElement="_14">
+        <omgdi:waypoint x="745.0" y="95.0"/>
+        <omgdi:waypoint x="745.0" y="140.0"/>
+        <omgdi:waypoint x="796.0" y="140.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_13" id="BPMNEdge__13" sourceElement="approval-sign" targetElement="_12">
+        <omgdi:waypoint x="290.0" y="612.5"/>
+        <omgdi:waypoint x="222.0" y="611.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_34" id="BPMNEdge__34" sourceElement="_14" targetElement="accept-accept_back">
+        <omgdi:waypoint x="796.0" y="140.0"/>
+        <omgdi:waypoint x="796.0" y="95.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_37" id="BPMNEdge__37" sourceElement="approval-sign_issue" targetElement="end">
+        <omgdi:waypoint x="840.0" y="782.5"/>
+        <omgdi:waypoint x="935.0" y="781.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_15" id="BPMNEdge__15" sourceElement="accept-accept_refuse" targetElement="_14">
+        <omgdi:waypoint x="796.0" y="240.0"/>
+        <omgdi:waypoint x="796.0" y="172.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_36" id="BPMNEdge__36" sourceElement="_14" targetElement="accept-accept_refuse">
+        <omgdi:waypoint x="812.0" y="156.0"/>
+        <omgdi:waypoint x="820.0" y="200.0"/>
+        <omgdi:waypoint x="820.0" y="240.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_17" id="BPMNEdge__17" sourceElement="_12" targetElement="expert-sign_expert">
+        <omgdi:waypoint x="206.0" y="627.0"/>
+        <omgdi:waypoint x="206.0" y="720.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_16" id="BPMNEdge__16" sourceElement="_19" targetElement="expert-deal_expert">
+        <omgdi:waypoint x="555.0" y="451.0"/>
+        <omgdi:waypoint x="360.0" y="442.5"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_18" id="BPMNEdge__18" sourceElement="expert-sign_expert" targetElement="approval-sign">
+        <omgdi:waypoint x="245.0" y="747.5"/>
+        <omgdi:waypoint x="290.0" y="612.5"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_20" id="BPMNEdge__20" sourceElement="_3" targetElement="approval-deal">
+        <omgdi:waypoint x="642.0" y="661.0"/>
+        <omgdi:waypoint x="710.0" y="520.0"/>
+        <omgdi:waypoint x="595.0" y="347.5"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_22" id="BPMNEdge__22" sourceElement="_12" targetElement="approval-deal">
+        <omgdi:waypoint x="200.0" y="601.0"/>
+        <omgdi:waypoint x="200.0" y="435.0"/>
+        <omgdi:waypoint x="510.0" y="347.5"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_24" id="BPMNEdge__24" sourceElement="accept-accept_turn" targetElement="_23">
+        <omgdi:waypoint x="556.0" y="145.0"/>
+        <omgdi:waypoint x="556.0" y="175.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_26" id="BPMNEdge__26" sourceElement="expert-deal_expert" targetElement="approval-deal">
+        <omgdi:waypoint x="310.0" y="415.0"/>
+        <omgdi:waypoint x="310.0" y="395.0"/>
+        <omgdi:waypoint x="510.0" y="347.5"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_25" id="BPMNEdge__25" sourceElement="_23" targetElement="approval-deal">
+        <omgdi:waypoint x="556.0" y="207.0"/>
+        <omgdi:waypoint x="556.0" y="320.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_28" id="BPMNEdge__28" sourceElement="_12" targetElement="pub-sign_pub">
+        <omgdi:waypoint x="190.0" y="611.0"/>
+        <omgdi:waypoint x="95.0" y="592.5"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_27" id="BPMNEdge__27" sourceElement="_23" targetElement="accept-accept_refuse">
+        <omgdi:waypoint x="572.0" y="191.0"/>
+        <omgdi:waypoint x="750.0" y="267.5"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_29" id="BPMNEdge__29" sourceElement="_23" targetElement="accept-accept_back">
+        <omgdi:waypoint x="572.0" y="191.0"/>
+        <omgdi:waypoint x="730.0" y="67.5"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_4" id="BPMNEdge__4" sourceElement="approval-dispatch" targetElement="_3">
+        <omgdi:waypoint x="626.0" y="595.0"/>
+        <omgdi:waypoint x="626.0" y="645.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_5" id="BPMNEdge__5" sourceElement="_2" targetElement="accept-accept_turn">
+        <omgdi:waypoint x="556.0" y="27.0"/>
+        <omgdi:waypoint x="556.0" y="90.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_6" id="BPMNEdge__6" sourceElement="_3" targetElement="expert-dispatch_expert">
+        <omgdi:waypoint x="610.0" y="661.0"/>
+        <omgdi:waypoint x="475.0" y="667.5"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_7" id="BPMNEdge__7" sourceElement="_3" targetElement="approval-sign_issue">
+        <omgdi:waypoint x="642.0" y="661.0"/>
+        <omgdi:waypoint x="755.0" y="782.5"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_8" id="BPMNEdge__8" sourceElement="approval-deal" targetElement="_19">
+        <omgdi:waypoint x="571.0" y="375.0"/>
+        <omgdi:waypoint x="571.0" y="435.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_9" id="BPMNEdge__9" sourceElement="_19" targetElement="approval-dispatch">
+        <omgdi:waypoint x="576.0" y="462.0"/>
+        <omgdi:waypoint x="576.0" y="540.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_30" id="BPMNEdge__30" sourceElement="pub-sign_pub" targetElement="approval-deal">
+        <omgdi:waypoint x="50.0" y="565.0"/>
+        <omgdi:waypoint x="50.0" y="470.0"/>
+        <omgdi:waypoint x="510.0" y="347.5"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_11" id="BPMNEdge__11" sourceElement="_19" targetElement="approval-sign">
+        <omgdi:waypoint x="555.0" y="451.0"/>
+        <omgdi:waypoint x="440.0" y="550.0"/>
+        <omgdi:waypoint x="375.0" y="612.5"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_33" id="BPMNEdge__33" sourceElement="_14" targetElement="approval-deal">
+        <omgdi:waypoint x="812.0" y="156.0"/>
+        <omgdi:waypoint x="955.0" y="245.0"/>
+        <omgdi:waypoint x="595.0" y="347.5"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_10" id="BPMNEdge__10" sourceElement="expert-dispatch_expert" targetElement="approval-dispatch">
+        <omgdi:waypoint x="470.0" y="640.0"/>
+        <omgdi:waypoint x="470.0" y="635.0"/>
+        <omgdi:waypoint x="565.0" y="567.5"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

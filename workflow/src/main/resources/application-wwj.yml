@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    url: jdbc:sqlserver://${wwjconfig.masterIp};DatabaseName=workflow
+    driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    username: ${wwjconfig.masterUsername}
+    password: ${wwjconfig.masterPwd}
+eureka:
+  client:
+    service-url:
+      defaultZone: ${wwjconfig.eurekaNodes}
+tx-lcn:
+  ribbon :
+    loadbalancer.dtx.enabled: true
+  # 默认之配置为TM的本机默认端口
+  client:
+    manager-address: ${wwjconfig.txLcnAddr}

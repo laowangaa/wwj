@@ -1,0 +1,6 @@
+spring:
+  datasource:
+    url: jdbc:sqlserver://192.168.31.136;DatabaseName=user
+    driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    username: sa
+    password: sys12345.
